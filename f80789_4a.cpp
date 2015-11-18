@@ -1,9 +1,7 @@
 #include <cstdio>
-#include <cctype>
+#include <cstring>
 
 using namespace std;
-
-int a[10];
 
 void print_number(int a[])
 {
@@ -20,20 +18,18 @@ void print_number(int a[])
 
 int main()
 {
-  char x;
-
-  while (scanf("%c", &x) != EOF)
+  char s[256];
+  int a[10];
+  for (int i = 0; i < 10; i++) a[i] = 0;
+  while (scanf("%s", s) != EOF)
   {
-    if (x == ' ')
+    for (int i = 0; i < strlen(s); i++)
     {
-      print_number(a);
+      a[s[i] - '0']++;
     }
-    else if (isdigit(x))
-    {
-      a[x - '0']++;
-    }
+    print_number(a);
+    for (int j = 0; j < 10; j++) a[j] = 0;
   }
-  print_number(a);
 
   return 0;
 }
