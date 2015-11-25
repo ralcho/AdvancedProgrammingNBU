@@ -65,7 +65,7 @@ int main()
   int numeral_system;
   char number[100];
 
-  while (scanf("%d%s", &numeral_system, number))
+  while (scanf("%d%s", &numeral_system, number) != EOF)
   {
     if (numeral_system == 2) printf("%d\n", binary_to_decimal(number));
     else if (numeral_system == 8) printf("%d\n", octal_to_decimal(number));
