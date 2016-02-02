@@ -4,10 +4,31 @@ using namespace std;
 
 const int MOVE_X[] = {-2, -1, 1, 2,  2,  1, -1, -2};
 const int MOVE_Y[] = { 1,  2, 2, 1, -1, -2, -2, -1};
+const int INF = 1 << 10;
 
 int table[12][12];
 int n, x, y;
 bool solution_found;
+
+bool check(int x, int y)
+{
+  return x > 0 && x <= n && y > 0 && y <= n && table[x][y] == 0;
+}
+
+int count_conflicts(int x, int y)
+{
+  int cnt = 0;
+
+  for (int i = 0; i < 8; i++)
+  {
+    int next_x = x + MOVE_X[i];
+    int next_y = y + MOVE_Y[i];
+
+    if (check(next_x, next_y)) cnt++;
+  }
+
+  return cnt;
+}
 
 void dfs(int x, int y, int d)
 {
@@ -30,17 +51,27 @@ void dfs(int x, int y, int d)
     return;
   }
 
+  int best = 10;
+  int best_x = INF, best_y = INF;
+
   for (int i = 0; i < 8; i++)
   {
     int next_x = x + MOVE_X[i];
     int next_y = y + MOVE_Y[i];
 
-    if (next_x > 0 && next_x <= n && next_y > 0 && next_y <= n && table[next_x][next_y] == 0)
+    if (check(next_x, next_y))
     {
-      dfs(next_x, next_y, d + 1);
+      int cnt = count_conflicts(next_x, next_y);
+      if (best > cnt)
+      {
+        best = cnt;
+        best_x = next_x;
+        best_y = next_y;
+      }
     }
-
   }
+
+  if (best < INF) dfs(best_x, best_y, d + 1);
 
   table[x][y] = 0;
 }
